@@ -3,6 +3,8 @@ import { HomeContainer, Product } from "../styles/pages/home";
 
 import { useKeenSlider } from 'keen-slider/react'
 
+import Link from 'next/link'
+
 import 'keen-slider/keen-slider.min.css'
 
 import { stripe } from "../lib/stripe";
@@ -17,7 +19,7 @@ interface Product {
   id: string
   name: string
   imageUrl: string
-  price: number
+  price: string
   currency: string
 }
 
@@ -32,16 +34,22 @@ export default function Home({ products }: HomeProps) {
 
   return (
     <HomeContainer ref={sliderRef} className='keen-slider'>
-      {products.map(product => (
-        <Product className='keen-slider__slide' key={product.id}>
-          <Image src={product.imageUrl} alt="" width={520} height={480} />
+      {products.map(product => {
+        return (
+          <Link
+            href={`/product/${product.id}`}
+            key={product.id}>
+            <Product className='keen-slider__slide'>
+              <Image src={product.imageUrl} alt="" width={520} height={480} />
 
-          <footer>
-            <strong>{product.name}</strong>
-            <span>{product.price}</span>
-          </footer>
-        </Product>
-      ))}
+              <footer>
+                <strong>{product.name}</strong>
+                <span>{product.price}</span>
+              </footer>
+            </Product>
+          </Link>
+        )
+      })}
     </HomeContainer>
   )
 }
